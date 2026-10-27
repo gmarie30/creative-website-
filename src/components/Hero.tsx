@@ -1,98 +1,45 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-const ARROW_BG = '#4c1d95'
-const avatars = [
-  'linear-gradient(135deg, #f0abfc, #a855f7)',
-  'linear-gradient(135deg, #fda4af, #e11d48)',
-  'linear-gradient(135deg, #fcd34d, #f59e0b)',
+const official = 'https://wendylovesthis.com'
+const images = {
+  hero: `${official}/cdn/shop/files/IMG_6636_642f1a57-34a5-4ffe-b5a8-5cf7d607ba77_1080x.jpg?v=1786647314`,
+  cotton: 'https://cdn.shopify.com/s/files/1/0621/6083/0717/files/498DC05D-36A5-49AB-BA2F-DBF76F589E9E_700x.jpg?v=1792190249',
+  linen: 'https://cdn.shopify.com/s/files/1/0621/6083/0717/files/NavyLinenBlouseonWoodenHanger_700x.png?v=1792521951',
+  accessories: `${official}/cdn/shop/files/BBC5586F-D6E4-47C6-974D-72059BA9DEEB_700x.jpg?v=1754596313`,
+}
+const collections = [
+  { title: 'The resort collection', category: 'Clothing', note: 'HAND BLOCK PRINTED COTTON', description: 'Airy prints and relaxed shapes for days by the water.', image: images.cotton, alt: 'Floral lounge pants from Wendy Loves This', href: '/collections/beach' },
+  { title: 'Wendy’s favorite finds', category: 'Clothing', note: 'A LITTLE EVERYDAY DISCOVERY', description: 'Discover easy layers and linen pieces from Italy.', image: images.linen, alt: 'Navy linen Lucia blouse displayed on a wooden hanger', href: '/collections/womens' },
+  { title: 'The finishing touches', category: 'Accessories', note: 'DETAILS TO LOVE', description: 'Bags, jewelry, and accessories to make the look yours.', image: images.accessories, alt: 'Suede leather bag with striped handles from Wendy Loves This', href: '/collections/accessories' },
 ]
+const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.65 } }
 
 export default function Hero() {
+  const [filter, setFilter] = useState('All')
+  const visible = collections.filter(item => filter === 'All' || item.category === filter)
   return (
-    <section style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}>
-      <video style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} src={`${import.meta.env.BASE_URL}hero.mp4`} autoPlay muted loop playsInline />
-      {/* Overlays — opacity reduced by 70% */}
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.13)' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.17) 0%, transparent 22%, transparent 60%, rgba(0,0,0,0.25) 100%)' }} />
-      <div style={{ position: 'absolute', top: '-14%', left: '50%', transform: 'translateX(-50%)', width: '1000px', height: '720px', background: 'radial-gradient(ellipse at 50% 30%, rgba(165,180,252,0.05) 0%, transparent 68%)', pointerEvents: 'none' }} />
-
-      {/* Centered content */}
-      <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 24px' }}>
-        {/* Social-proof badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '5px 12px 5px 7px', borderRadius: '999px', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', marginBottom: '20px' }}
-        >
-          <div style={{ display: 'flex' }}>
-            {avatars.map((bg, i) => (
-              <span key={i} style={{ width: '17px', height: '17px', borderRadius: '999px', background: bg, border: '2px solid rgba(30,25,45,0.6)', marginLeft: i === 0 ? 0 : '-6px' }} />
-            ))}
-          </div>
-          <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.9)', fontWeight: 400 }}>4,900+ people already on the waitlist</span>
-        </motion.div>
-
-        {/* Headline — heavy + thin contrast */}
-        <motion.h1
-          initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.85, delay: 0.22, ease: 'easeOut' }}
-          style={{ margin: 0, color: '#fff', textShadow: '0 2px 40px rgba(0,0,0,0.4)' }}
-        >
-          <span style={{ display: 'block', fontWeight: 800, fontSize: 'clamp(1.8rem, 4.95vw, 3.7rem)', lineHeight: 1, letterSpacing: '-0.035em' }}>
-            Precision by Default.
-          </span>
-          <span style={{ display: 'block', fontWeight: 200, fontSize: 'clamp(1.95rem, 5.2vw, 3.9rem)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
-            Clarity in Everything.
-          </span>
-        </motion.h1>
-
-        {/* Subtext */}
-        <motion.p
-          initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-          style={{ margin: '18px 0 0', maxWidth: '400px', fontSize: '10.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.72)', textShadow: '0 1px 16px rgba(0,0,0,0.4)' }}
-        >
-          A minimal, precise toolkit for teams who sweat the small stuff. Design, build, and ship with confidence — every detail accounted for, nothing left to chance.
-        </motion.p>
-
-        {/* Email capture */}
-        <motion.form
-          onSubmit={(e) => e.preventDefault()}
-          initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.55, ease: 'easeOut' }}
-          style={{ display: 'flex', alignItems: 'center', gap: '7px', width: 'min(350px, 94vw)', marginTop: '24px', padding: '5px 5px 5px 16px', borderRadius: '999px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', boxShadow: '0 16px 44px rgba(0,0,0,0.28)' }}
-        >
-          <input
-            className="frost-input"
-            type="email"
-            placeholder="Enter your email"
-            style={{ flex: 1, minWidth: 0, border: 'none', outline: 'none', background: 'transparent', fontSize: '10px', color: '#fff', fontFamily: "'Inter', sans-serif" }}
-          />
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '8px', padding: '5px 5px 5px 16px', borderRadius: '999px', background: '#fff', border: 'none', cursor: 'pointer', boxShadow: '0 6px 20px rgba(0,0,0,0.25)' }}
-          >
-            <span style={{ fontSize: '9.5px', fontWeight: 600, color: '#14111f', whiteSpace: 'nowrap' }}>Join the Waitlist</span>
-            <span style={{ width: '25px', height: '25px', borderRadius: '999px', background: ARROW_BG, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-          </motion.button>
-        </motion.form>
-      </div>
-
-      {/* Footer strip */}
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.75, ease: 'easeOut' }}
-        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 10, padding: '20px 48px 26px' }}
-      >
-        <div style={{ height: '1px', width: '100%', background: 'rgba(255,255,255,0.14)', marginBottom: '18px' }} />
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px', maxWidth: '1100px', margin: '0 auto', flexWrap: 'wrap' }}>
-          <p style={{ margin: 0, flex: 1, minWidth: '260px', textAlign: 'center', fontSize: '12.5px', lineHeight: 1.6, color: 'rgba(255,255,255,0.55)' }}>
-            We believe great tools should feel invisible. Explore the ideas, details, and small decisions we've obsessed over to help your team do its best work.
-          </p>
-          <a href="#learn" style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', textDecoration: 'none', whiteSpace: 'nowrap' }}>Learn more →</a>
+    <main>
+      <section className="hero" id="home" aria-labelledby="hero-title">
+        <img className="hero-image" src={images.hero} alt="A relaxed white linen outfit and woven bag, featured by Wendy Loves This" fetchPriority="high" />
+        <div className="hero-shade" />
+        <div className="hero-content">
+          <motion.div className="glass-badge" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>A LITTLE COASTAL. A LOT TO LOVE.</motion.div>
+          <motion.h1 id="hero-title" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}><span>Made for sunshine.</span><span className="thin-line">Loved for real life.</span></motion.h1>
+          <motion.p className="hero-description" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>Meet Wendy Loves This: breezy cotton, beautiful linen, and favorite finds for wherever the day takes you.</motion.p>
+          <motion.div className="glass-cta" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}><span>Your next favorite is waiting.</span><motion.a href="#collections" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>Explore the edit <span className="arrow-circle" aria-hidden="true">↗</span></motion.a></motion.div>
         </div>
-      </motion.div>
-    </section>
+        <motion.div className="hero-footer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.5 }}><span>Easy layers. Beautiful details. Room to breathe.</span><a href="#collections">Find something you love ↓</a></motion.div>
+      </section>
+
+      <section className="collections section-wrap" id="collections" aria-labelledby="collection-title">
+        <motion.div {...fade} className="section-heading"><div><p className="eyebrow">THE WENDY LOVES THIS EDIT</p><h2 id="collection-title">A wardrobe with <em>somewhere to go.</em></h2></div><p>From a slow morning to an evening out.<br />Find the pieces that feel like you.</p></motion.div>
+        <div className="collection-filters" role="group" aria-label="Filter collections">{['All', 'Clothing', 'Accessories'].map(label => <motion.button key={label} type="button" aria-pressed={filter === label} onClick={() => setFilter(label)} whileTap={{ scale: 0.96 }}>{label === 'All' ? 'All collections' : label}</motion.button>)}<span className="results-count" aria-live="polite">{visible.length} {visible.length === 1 ? 'collection' : 'collections'}</span></div>
+        <div className="collection-grid">{visible.map(item => <motion.article key={item.title} {...fade} className="collection-card"><a href={official + item.href} target="_blank" rel="noreferrer"><div className="card-image-wrap"><img src={item.image} alt={item.alt} loading="lazy" /><span className="card-arrow" aria-hidden="true">↗</span></div><p className="eyebrow">{item.note}</p><h3>{item.title}</h3><p>{item.description}</p><span className="shop-link">Explore on the official shop ↗</span></a></motion.article>)}</div>
+      </section>
+
+      <section className="story" id="story" aria-labelledby="story-title"><motion.div {...fade} className="story-inner"><span className="story-heart" aria-hidden="true">♡</span><p className="eyebrow">THOUGHTFULLY FOUND. EFFORTLESSLY WORN.</p><h2 id="story-title">Good days start<br />with <em>feeling like yourself.</em></h2><p>Wendy Loves This brings together cotton garments hand block printed in India, linen from Italy, and finds from around the world. Think relaxed fits, light fabrics, and pieces you can take from the coast into everyday life.</p><motion.a className="button-dark" href={official} target="_blank" rel="noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>Discover Wendy Loves This ↗</motion.a></motion.div></section>
+      <footer className="site-footer"><a className="brand" href="#home">wendy loves this<span aria-hidden="true">♡</span></a><p>Educational concept · Business information and imagery from <a href={official} target="_blank" rel="noreferrer">wendylovesthis.com ↗</a></p></footer>
+    </main>
   )
 }
