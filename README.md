@@ -1,6 +1,11 @@
-# Frost
+# Wendy Loves This — Educational Website
 
-Vite + React 19 + TypeScript, Tailwind CSS v4, and Framer Motion.
+An educational adaptation of the existing Frost template using Vite, React 19, TypeScript, Tailwind CSS v4, and Framer Motion.
+
+The exact educational disclaimer stays visible in the sticky header. Features include collection filters, mobile navigation, animated hero content, and links to the official business shop.
+
+Business information and fashion imagery: https://wendylovesthis.com/
+Images are loaded from the business's public Shopify image URLs. This project is not the official business website, and it does not collect email addresses or process orders.
 
 ## Development
 
@@ -20,5 +25,3 @@ Repository: https://github.com/gmarie30/creative-website-
 Website: https://gmarie30.github.io/creative-website-/
 
 GitHub Pages source: GitHub Actions. Pushes to main run lint, build, and deploy.
-
-The supplied template design and interactions are preserved. The waitlist form is visual only and does not save email addresses.
